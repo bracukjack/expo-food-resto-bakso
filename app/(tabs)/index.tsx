@@ -1,70 +1,59 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import {ThemedView} from '@/components/ThemedView';
+import {Button, ButtonSpinner, ButtonText} from '@/components/ui/button';
+import {Box} from '@/components/ui/box';
+import {Text} from '@/components/ui/text';
+import React from 'react';
+import {VStack} from '@/components/ui/vstack';
+import {Input, InputField} from '@/components/ui/input';
+import {Textarea, TextareaInput} from '@/components/ui/textarea';
 
 export default function HomeScreen() {
+  const [isInvalid, setIsInvalid] = React.useState(false);
+  const [inputValue, setInputValue] = React.useState('12345');
+  const handleSubmit = () => {
+    if (inputValue.length < 6) {
+      setIsInvalid(true);
+    } else {
+      setIsInvalid(false);
+    }
+  };
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ThemedView className="p-5 flex flex-col gap-2">
+      <Box className="p-5 flex justify-center items-center bg-gray-700 rounded-lg">
+        <Text className="text-typography-0">This is the Box</Text>
+      </Box>
+      <Button className="w-full px-5 py-2 bg-gray-700 rounded-lg">
+        <ButtonSpinner className="color-gray-400" />
+        <ButtonText className="font-medium text-sm ml-2">
+          Please wait...
+        </ButtonText>
+      </Button>
+
+      <Button className="w-fit py-1 bg-gray-500 rounded-lg">
+        <ButtonText className="font-medium text-sm">Submit</ButtonText>
+      </Button>
+
+      <VStack className="w-full max-w-[300px] rounded-md border border-background-200 p-4">
+        <Input className="my-1" size={'md'}>
+          <InputField type="text" placeholder="kjfdkdj" />
+        </Input>
+
+        <Textarea
+          size="md"
+          isReadOnly={false}
+          isInvalid={false}
+          isDisabled={false}
+          className="w-64">
+          <TextareaInput placeholder="Your text goes here..." />
+        </Textarea>
+
+        <Button
+          className="w-fit self-end mt-4"
+          size="sm"
+          onPress={handleSubmit}>
+          <ButtonText>Submit</ButtonText>
+        </Button>
+      </VStack>
+    </ThemedView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
